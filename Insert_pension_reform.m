@@ -6,7 +6,7 @@
 alfa = 0.4;
 betta = 1/(1+0.01)^35;
 n = 0;
-sigma = 1.2;
+sigma = 1.001;
 tau = 0.20;
 tau1 = 0.15;
 betta_tild = betta/(1 + (1-alfa)*tau/alfa);
