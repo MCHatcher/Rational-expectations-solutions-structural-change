@@ -1,6 +1,8 @@
 % Arbitrary announcement date T_ann, applied to Application 3 - Pension reform
-% Diamond (1965) model with CES utility; see Fedotenkov (2016,EL) and
-% Hatcher(2019, EL) for log utility version of the model
+% Diamond (1965) model with CES utility; see Fedotenkov (2016,Econ Lett) and
+% Hatcher(2019, Econ Lett) for log utility version of the model
+%Model structures are defined in the 'Insert' files
+%Written by Michael Hatcher (m.c.hatcher@soton.ac.uk). Any errors are my own.
 
 clc; clear;
 
@@ -22,11 +24,11 @@ Omeg = Omega_tild; Gama = Gama_tild; Psi = Psi_tild;
 %Computation of matrix recursion
  for t=T_sim:-1:1       
             
-    B1t = ind(t,1)*B1 + (1-ind(t,1))*B1_tild;
-    B2t = ind(t,1)*B2 + (1-ind(t,1))*B2_tild;
-    B3t = ind(t,1)*B3 + (1-ind(t,1))*B3_tild;
-    B4t = ind(t,1)*B4 + (1-ind(t,1))*B4_tild;
-    B5t = ind(t,1)*B5 + (1-ind(t,1))*B5_tild;
+    B1t = ind(t)*B1 + (1-ind(t))*B1_tild;
+    B2t = ind(t)*B2 + (1-ind(t))*B2_tild;
+    B3t = ind(t)*B3 + (1-ind(t))*B3_tild;
+    B4t = ind(t)*B4 + (1-ind(t))*B4_tild;
+    B5t = ind(t)*B5 + (1-ind(t))*B5_tild;
          
    Omeg = (B1t - B2t*Omeg) \ B3t; 
    Gama = (B1t - B2t*Omeg) \ B4t; 
