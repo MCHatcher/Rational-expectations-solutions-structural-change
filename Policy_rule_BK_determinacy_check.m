@@ -9,7 +9,7 @@ run Insert_NK_forward_guidance_BK
 
 %Write model in the BK form: A*y(t) = B*E(t)y(t+1) + other(t)
 %--> E(t)y(t+1) = *y(t) - B^(-1)*other(t), where C := B^(-1)*A
-%A variable is predetermined if E(t)z(t+1) = z(t+1)
+%Variable is predetermined if E(t)z(t+1) = z(t+1)
 
 n = length(B1_tild);
 B = [-B2_tild B1_tild; zeros(n) eye(n)];
