@@ -1,5 +1,5 @@
-% Algorithm for computing the unique fixed-structure fundamental rational expectations solution 
-%using time iteration (along the lines of Cho and Moreno (2011, JEDC))
+% Alternative algorithm for computing the unique fixed-structure fundamental rational 
+% expectations solution using time iteration (along similar lines to Cho and Moreno (2011, JEDC))
 % Written by Michael Hatcher (m.c.hatcher@soton.ac.uk). Any errors are my own.
 
 J = 10000;  %no. iterations
