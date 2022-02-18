@@ -6,21 +6,21 @@
 alfa = 0.4;
 betta = 1/(1+0.01)^35;
 n = 0;
-sigma = 1.001;
+sigma = 0.90;  
 tau = 0.20;
 tau1 = 0.15;
 betta_tild = betta/(1 + (1-alfa)*tau/alfa);
 betta_tild1 = betta/(1 + (1-alfa)*tau1/alfa);
 
 %Find steady state capital
-%Kmax,Kmin = 0,0.1 (sigma = 1.001), Kmin,Kmax = 0,0.1 (sigma = 1.2), Kmin,Kmax = 0.2,0.4 (sigma = 0.8)
-Kmax = 0.1;
-Kmin = 0;
-Nstep = 40000;
+Kmax = 0.15;
+Kmin = 0.00001;
+Nstep = 200000;
+kstack = linspace(Kmin,Kmax,Nstep);
 
 for j=1:Nstep
 
-k(j) = 1e-6 + (j-1)*(Kmax-Kmin)/Nstep;
+k(j) = kstack(j);
 %Orig steady state
 Resid(j) = abs( k(j)^(1-alfa)* ( (alfa + (1-alfa)*tau)*k(j)^(alfa-1)  + (alfa*betta)^(1/sigma)*k(j)^((alfa-1)/sigma) ) - (alfa*betta)^(1\sigma)*(1-tau)*(1-alfa)/(1+n) * k(j)^((alfa-1)/sigma) );
 %Resid(j) = abs( (alfa + (1-alfa)*tau)*(k(j))^((1-alfa)/sigma) + (alfa*betta)^(1/sigma)*(k(j))^(1-alfa) - (alfa*betta)^(1\sigma)*(1-tau)*(1-alfa)/(1+n) );
@@ -29,8 +29,10 @@ Resid1(j) = abs( k(j)^(1-alfa)* ( (alfa + (1-alfa)*tau1)*k(j)^(alfa-1)  + (alfa*
 %Resid1(j) = abs( (alfa + (1-alfa)*tau1)*(k(j))^((1-alfa)/sigma) + (alfa*betta)^(1/sigma)*(k(j))^(1-alfa) - (alfa*betta)^(1\sigma)*(1-tau1)*(1-alfa)/(1+n) );
 end
 
+%Log utility - for comparison
 klog = (betta_tild/(1+betta_tild)*(1-tau)*(1-alfa)/(1+n))^(1/(1-alfa));
 klog1 = (betta_tild1/(1+betta_tild1)*(1-tau1)*(1-alfa)/(1+n))^(1/(1-alfa));
+
 [MN,Ind] = min(Resid);
 [MN1,Ind1] = min(Resid1);
 
@@ -55,7 +57,7 @@ B3 = [0 0 0 0 0; 0 0 0 alfa-1 0; 0 0 0 alfa 0; 0 0 0 0 0; 0 0 0 alfa 0];
 B4  = zeros(5,1);
 B5 = zeros(5,1);
 
-%Alternative regime
+%Alternative (terminal) regime
 xbar = [log(cystar); log(rstar); log(wstar); log(kstar); log(costar)];
 xstar = [log(cystar1); log(rstar1); log(wstar1); log(kstar1); log(costar1)];
 B1_tild = [1 0 0 0 0; 0 1 0 0 0; 0 0 1 0 0; 1 0 (1-tau1)*(-1)*(1-alfa)*kstar1^alfa/cystar1 (1+n)*kstar1/cystar1 0; 0 0 0 0 1];
