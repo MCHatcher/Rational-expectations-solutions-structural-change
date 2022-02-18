@@ -1,4 +1,4 @@
-% Application 1 - NK Shift in Inflation Target
+% Application 1 - NK Shift in Inflation Target (imperfect credibility)
 % Model in Cagliarini and Kulish (2013)
 
 %Calibration
@@ -25,9 +25,9 @@ e_vec(:,1) = [0; 1; 0];  e_vec(:,2:T_sim) = zeros(3,T_sim-1); %Impulse responses
 
 %Imperfect credibility matrices
 Dummy = 0;   %Set to 1 (0) for expectations that track past inflation (original inflation target) 
-F0 = zeros(6,6);
+F0 = zeros(length(X_init),length(X_init));
 F1 = [Dummy 0 0 0 0 0; 0 0 0 0 0 0; 0 0 0 0 0 0; 0 0 0 0 0 0; 0 0 0 0 0 0; 0 0 0 0 0 0];
-F2 = zeros(6,3);
+F2 = zeros(length(X_init),length(VCOV));
 F3 = [(1-Dummy)*pistar; 0; 0; 0; 0; 0];
 
 %Reference regime
