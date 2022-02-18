@@ -1,6 +1,8 @@
 % Arbitrary announcement date T_ann, applied to Application 3 - Pension reform
 % Diamond (1965) model with CES utility; see Fedotenkov (2016,EL) and
-% Hatcher(2019, EL) for log utility version of the model
+% Hatcher (2019, EL) for log utility version of the model
+%Model structures are defined in the 'Insert' files
+%Written by Michael Hatcher (m.c.hatcher@soton.ac.uk). Any errors are my own.
 
 clc; clear;
 
@@ -8,12 +10,8 @@ clc; clear;
 T_ann = 4; T_tild = 4;
 T_sim = 5000; %Simulation length
 
-Nloop = 20;
-stack = linspace(0.001,0.999,Nloop);
-
-for z=1:Nloop
-
-SP_discount = stack(z); %social discount factor
+Nloop = 30;
+stack = linspace(0.005,0.995,Nloop);
 
 % Model and calibration
 run Insert_pension_reform
@@ -29,11 +27,11 @@ Omeg = Omega_tild; Gama = Gama_tild; Psi = Psi_tild;
 %Computation of matrix recursion
  for t=T_sim:-1:1       
             
-    B1t = ind(t,1)*B1 + (1-ind(t,1))*B1_tild;
-    B2t = ind(t,1)*B2 + (1-ind(t,1))*B2_tild;
-    B3t = ind(t,1)*B3 + (1-ind(t,1))*B3_tild;
-    B4t = ind(t,1)*B4 + (1-ind(t,1))*B4_tild;
-    B5t = ind(t,1)*B5 + (1-ind(t,1))*B5_tild;
+    B1t = ind(t)*B1 + (1-ind(t))*B1_tild;
+    B2t = ind(t)*B2 + (1-ind(t))*B2_tild;
+    B3t = ind(t)*B3 + (1-ind(t))*B3_tild;
+    B4t = ind(t)*B4 + (1-ind(t))*B4_tild;
+    B5t = ind(t)*B5 + (1-ind(t))*B5_tild;
          
    Omeg = (B1t - B2t*Omeg) \ B3t; 
    Gama = (B1t - B2t*Omeg) \ B4t; 
@@ -96,33 +94,43 @@ for t=1:T_sim
         
         cyu(t) = Xu_stack(1,t); ru(t) = Xu_stack(2,t); wu(t) = Xu_stack(3,t);
         ku(t) = Xu_stack(4,t); cou(t) = Xu_stack(5,t);
+        
+        %Log deviations from new steady state
+        cy1(t) = cy(t) + log(cystar/cystar1);  co1(t) = co(t) + log(costar/costar1);  
+        cyu1(t) = cyu(t) + log(cystar/cystar1);  cou1(t) = cou(t) + log(costar/costar1); 
     
 end 
 
+for z=1:Nloop
 
-U_init = (1/(1-sigma))*(exp(cystar))^(1-sigma) + betta*(exp(costar))^(1-sigma) + (exp(cystar))^(1-sigma)*(cy(T_ann-1) +(1-sigma)/2*cy(T_ann-1)^2) + (exp(costar))^(1-sigma)*(co(T_ann) +(1-sigma)/2*co(T_ann)^2);
+SP_discount = stack(z); %social discount factor
+
+U_init = (1/(1-sigma))*( cystar^(1-sigma) + betta*costar^(1-sigma) ) + cystar^(1-sigma)*(cy(T_ann-1) +(1-sigma)/2*cy(T_ann-1)^2) + costar^(1-sigma)*(co(T_ann) +(1-sigma)/2*co(T_ann)^2);
 
 for t=T_ann:T_sim-1
-    
-     U(t) = (1/(1-sigma))*( exp(cystar1)^(1-sigma) + betta*exp(costar1)^(1-sigma) ) + (exp(cystar1))^(1-sigma)*(cy(t) +(1-sigma)/2*cy(t)^2) + betta*(exp(costar1))^(1-sigma)*(co(t+1) +(1-sigma)/2*co(t+1)^2);
-     Uu(t) = (1/(1-sigma))*( exp(cystar1)^(1-sigma) + betta*exp(costar1)^(1-sigma) ) + (exp(cystar1))^(1-sigma)*(cyu(t) +(1-sigma)/2*cyu(t)^2) + betta*(exp(costar1))^(1-sigma)*(cou(t+1) +(1-sigma)/2*cou(t+1)^2); 
      
-   if t <= T_tild
-       U(t) = (1/(1-sigma))*( exp(cystar)^(1-sigma) + betta*exp(costar)^(1-sigma) ) + (exp(cystar))^(1-sigma)*(cy(t) +(1-sigma)/2*cy(t)^2) + betta*(exp(costar))^(1-sigma)*(co(t+1) +(1-sigma)/2*co(t+1)^2);
-       Uu(t) = (1/(1-sigma))*( exp(cystar)^(1-sigma) + betta*exp(costar)^(1-sigma) ) + (exp(cystar))^(1-sigma)*(cyu(t) +(1-sigma)/2*cyu(t)^2) + betta*(exp(costar))^(1-sigma)*(cou(t+1) +(1-sigma)/2*cou(t+1)^2);
-   end
+     U(t) = (1/(1-sigma))*( cystar1^(1-sigma) + betta*costar1^(1-sigma) ) + cystar1^(1-sigma)*(cy1(t) +(1-sigma)/2*cy1(t)^2) + betta*costar1^(1-sigma)*(co1(t+1) +(1-sigma)/2*co1(t+1)^2);
+     Uu(t) = (1/(1-sigma))*( cystar1^(1-sigma) + betta*costar1^(1-sigma) ) + cystar1^(1-sigma)*(cyu1(t) +(1-sigma)/2*cyu1(t)^2) + betta*costar1^(1-sigma)*(cou1(t+1) +(1-sigma)/2*cou1(t+1)^2); 
        
+   if t == T_ann
+       U(t) = SP_discount^(-1)*U_init + (1/(1-sigma))*( cystar^(1-sigma) + betta*costar^(1-sigma) ) + cystar^(1-sigma)*(cy(t) + (1-sigma)/2*cy(t)^2) + betta*costar^(1-sigma)*(co(t+1) +(1-sigma)/2*co(t+1)^2);
+       Uu(t) = SP_discount^(-1)*U_init + (1/(1-sigma))*( cystar^(1-sigma) + betta*costar^(1-sigma) ) + cystar^(1-sigma)*(cyu(t) + (1-sigma)/2*cyu(t)^2) + betta*costar^(1-sigma)*(cou(t+1) +(1-sigma)/2*cou(t+1)^2);
+   end
+     
    U1(t) = SP_discount^(t-T_ann)*U(t);
    U1u(t) = SP_discount^(t-T_ann)*Uu(t);
    
 end
 
-Welfare(z) = sum(U1) + SP_discount^(-1)*U_init;
-Welfareu(z) = sum(U1u) + SP_discount^(-1)*U_init;
+Welfare = sum(U1);  
+Welfareu = sum(U1u);
+
+V0(z) = Welfare - SP_discount^(-1)*U_init;
+V0u(z) = Welfareu - SP_discount^(-1)*U_init;
 
 
-    lambda(z) = 100*( (Welfare(z)/Welfareu(z))^(1/(1-sigma)) - 1);
-    lambda1(z) = 100*(Welfare(z)-Welfareu(z))/Welfareu(z);
+    lambda(z) = 100*( (V0/V0u)^(1/(1-sigma)) - 1);
+    %lambda1(z) = 100*(Welfare-Welfareu)/Welfareu;
     discount(z) = SP_discount;
     zero(z) = 0;
     
@@ -130,10 +138,10 @@ Welfareu(z) = sum(U1u) + SP_discount^(-1)*U_init;
 
 
 figure(1)
-hold on, plot(discount,lambda1), hold on, xlabel('Social discount factor (\gamma)'), ylabel('% change in social welfare'), plot(discount,zero,'--k')
+hold on, plot(discount,lambda,'k'), hold on, xlabel('Social discount factor (\gamma)'), ylabel('% lifetime consumption'), plot(discount,zero,'--k')
 
-figure(2)
-hold on, plot(discount, Welfare-Welfareu), hold on, plot(discount,zero,'--k'), xlabel('Social discount factor (\gamma)'), ylabel('Welfare gain of announced reform')
+%figure(2)
+%hold on, plot(discount, Welfare-Welfareu), hold on, plot(discount,zero,'--k'), xlabel('Social discount factor (\gamma)'), ylabel('Welfare gain of announced reform')
 
 
 
