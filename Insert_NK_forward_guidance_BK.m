@@ -1,4 +1,4 @@
-% Application 2 - NK Forward Guidance
+% Applications 2 and 3 - NK Forward Guidance 
 % Model in Cagliarini and Kulish (2013)
 
 %Calibration
