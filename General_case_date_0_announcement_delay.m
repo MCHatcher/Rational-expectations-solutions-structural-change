@@ -40,10 +40,10 @@ Lambda = 0.7;
         B2t = B2t*Lambda;
         B5t = B5t + B2t*(1-Lambda)*Psi_tild;
     end
-         
-   Omeg = (B1t - B2t*Omeg) \ B3t; 
+      
    Gama = (B1t - B2t*Omeg) \ B4t; 
-   Psi = (B1t - B2t*Omeg) \ (B2t*Psi + B5t);    
+   Psi = (B1t - B2t*Omeg) \ (B2t*Psi + B5t);  
+   Omeg = (B1t - B2t*Omeg) \ B3t;    
         
     if t >= T_tild+1
         Omeg = Omega_tild;

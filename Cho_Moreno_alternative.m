@@ -15,13 +15,13 @@ OmegT_tild = B3_tild; GamaT_tild = B4_tild;  PsiT_tild = B5_tild;
 
 for i=1:J
     
-    OmegT = (B1 - B2*OmegT) \ B3;
     GamaT = (B1 - B2*OmegT) \ B4;
     PsiT =  (B1 - B2*OmegT) \ (B2*PsiT + B5);
+    OmegT = (B1 - B2*OmegT) \ B3;
     
-    OmegT_tild = (B1_tild - B2_tild*OmegT_tild) \ B3_tild;
     GamaT_tild = (B1_tild - B2_tild*OmegT_tild) \ B4_tild;
     PsiT_tild =  (B1_tild - B2_tild*OmegT_tild) \ (B2_tild*PsiT_tild + B5_tild);
+    OmegT_tild = (B1_tild - B2_tild*OmegT_tild) \ B3_tild;
       
 end
 

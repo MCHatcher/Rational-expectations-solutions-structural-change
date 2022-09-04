@@ -43,14 +43,14 @@ Omeg_IC = Omega_bar; Gama_IC = Gama_bar; Psi_IC = Psi_bar;
     B3t_IC = ind_IC(t)*B3 + (1-ind_IC(t))*B3_tild;
     B4t_IC = ind_IC(t)*B4 + (1-ind_IC(t))*B4_tild;
     B5t_IC = ind_IC(t)*B5 + (1-ind_IC(t))*B5_tild;
-         
-   Omeg_star = (B1t - B2t*Omeg_star) \ B3t; 
+    
    Gama_star = (B1t - B2t*Omeg_star) \ B4t; 
    Psi_star = (B1t - B2t*Omeg_star) \ (B2t*Psi_star + B5t); 
+   Omeg_star = (B1t - B2t*Omeg_star) \ B3t; 
    
-   Omeg_IC = (B1t_IC - B2t_IC*Omeg_IC) \ B3t_IC; 
    Gama_IC  = (B1t_IC - B2t_IC*Omeg_IC) \ B4t_IC; 
    Psi_IC  = (B1t_IC - B2t_IC*Omeg_IC) \ (B2t_IC*Psi_IC + B5t_IC);
+   Omeg_IC = (B1t_IC - B2t_IC*Omeg_IC) \ B3t_IC; 
         
     if t >= T+1
         Omeg_star = Omega_tild;
@@ -99,10 +99,10 @@ Lambda = 0.7;
         B2t = B2t*Lambda;
         B5t = B5t + B2t*(1-Lambda)*Psi_tild_IC_t(:,:,t+1);
     end
-         
-   Omeg = (B1t - B2t*Omeg) \ B3t; 
+        
    Gama = (B1t - B2t*Omeg) \ B4t; 
-   Psi = (B1t - B2t*Omeg) \ (B2t*Psi + B5t);    
+   Psi = (B1t - B2t*Omeg) \ (B2t*Psi + B5t);  
+   Omeg = (B1t - B2t*Omeg) \ B3t;    
         
     if t >= T_tild+1
         Omeg = Omega_tild;

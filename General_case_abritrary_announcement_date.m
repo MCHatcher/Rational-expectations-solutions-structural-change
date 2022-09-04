@@ -4,7 +4,7 @@
 %Model structures are defined in the 'Insert' files
 %Written by Michael Hatcher (m.c.hatcher@soton.ac.uk). Any errors are my own.
 
-clc; clear; close all;
+clc; clear; %close all;
 
 % Announcement date and final date before terminal structure
 T_ann = 4; T_tild = 7;
@@ -30,10 +30,10 @@ Omeg = Omega_tild; Gama = Gama_tild; Psi = Psi_tild;
     B3t = ind(t)*B3 + (1-ind(t))*B3_tild;
     B4t = ind(t)*B4 + (1-ind(t))*B4_tild;
     B5t = ind(t)*B5 + (1-ind(t))*B5_tild;
-         
-   Omeg = (B1t - B2t*Omeg) \ B3t; 
+   
    Gama = (B1t - B2t*Omeg) \ B4t; 
-   Psi = (B1t - B2t*Omeg) \ (B2t*Psi + B5t);    
+   Psi = (B1t - B2t*Omeg) \ (B2t*Psi + B5t);  
+   Omeg = (B1t - B2t*Omeg) \ B3t;   
         
     if t >= T_tild+1
         Omeg = Omega_tild;

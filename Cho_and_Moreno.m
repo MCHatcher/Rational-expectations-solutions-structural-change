@@ -30,11 +30,11 @@ for i=1:J
     if isIllConditioned(decomp)==1
         break
     end
-    
-    BT = (I - A*BT) \ B;     
+        
     AT = (I - A*BT) \  A*AT;
     CT = (I - A*BT) \ C;            %Since R = 0_{ m \times m}
     DT = (I - A*BT) \ (D + A*DT);
+    BT = (I - A*BT) \ B; 
     
 end
 
@@ -44,11 +44,11 @@ for i = 1:J
     if isIllConditioned(decomp)==1
         break
     end
-    
-    BT_tild = (I - A_tild*BT_tild) \ B_tild;     
+       
     AT_tild = (I - A_tild*BT_tild) \  A_tild*AT_tild;
     CT_tild = (I - A_tild*BT_tild) \ C_tild;            %Since R = 0_{ m \times m}
     DT_tild = (I - A_tild*BT_tild) \ (D_tild + A_tild*DT_tild);
+    BT_tild = (I - A_tild*BT_tild) \ B_tild;  
       
 end
 

@@ -34,7 +34,7 @@ Omeg = Omega_tild; Gama = Gama_tild; Psi = Psi_tild;
     
     %for solution refinements
     
-    Lambda = [0.70 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0; 0 0 0 1 0 0; 0 0 0 0 1 0; 0 0 0 0 0 1];
+    Lambda = [0.85 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0; 0 0 0 1 0 0; 0 0 0 0 1 0; 0 0 0 0 0 1];
     %Lambda = eye(6);  %for perfect credibility case
     
     if t >= T_tild+1
@@ -46,10 +46,10 @@ Omeg = Omega_tild; Gama = Gama_tild; Psi = Psi_tild;
     B3t_hat = B3t + B2t*(eye(length(B1t))-Lambda)*F1;
     B4t_hat = B4t + B2t*(eye(length(B1t))-Lambda)*F2;
     B5t_hat = B5t + B2t*(eye(length(B1t))-Lambda)*F3;
-         
-   Omeg = (B1t_hat - B2t_hat*Omeg) \ B3t_hat; 
+    
    Gama = (B1t_hat - B2t_hat*Omeg) \ B4t_hat; 
-   Psi = (B1t_hat - B2t_hat*Omeg) \ (B2t_hat*Psi + B5t_hat);    
+   Psi = (B1t_hat - B2t_hat*Omeg) \ (B2t_hat*Psi + B5t_hat); 
+   Omeg = (B1t_hat - B2t_hat*Omeg) \ B3t_hat; 
         
     if t >= T_tild+1
         Omeg = Omega_tild;
