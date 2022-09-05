@@ -62,6 +62,6 @@ Omega_tild = BT_tild; Gama_tild = CT_tild; Psi_tild = DT_tild;
 end
 
 if abs(det(B1)) ==  0    ||   abs(det(B1_tild)) == 0  
-    disp('Matrix A and/or A_tild non-invertible')
+    disp('Matrix B1 and/or B1_tild non-invertible')
     run Cho_Moreno_alternative
 end
